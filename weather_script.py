@@ -80,12 +80,13 @@ def fetch_weather_data(args):
 
             daily_data = pd.DataFrame(data_dict)
 
-            full_path = os.path.join(path, f"{location['name'][j]}.parquet")
+            full_path = os.path.join(path, f"{location['name'][j]}.csv")
 
             save_parquet(
                 df=daily_data,
                 file_name=full_path
             )
+        break
         time.sleep(40)
         logger.info(f"Batch {i+1} is finished...")
 
@@ -118,9 +119,7 @@ def read_response(response):
         end = pd.to_datetime(daily.TimeEnd(), unit = "s", utc = True),
         freq = pd.Timedelta(seconds = daily.Interval()),
         inclusive = "left"
-    )}
-
-    logger.info(daily_data)
+    ).strftime("%Y-%m-%d")}
     
     daily_data["weather_code"] = daily_weather_code
     daily_data["temperature_2m_max"] = daily_temperature_2m_max
@@ -146,8 +145,9 @@ def read_response(response):
     return daily_data
 
 def save_parquet(df, file_name):
-    table = pa.Table.from_pandas(df)
-    pq.write_table(table, f'{file_name}')
+    df.to_csv(file_name, index=False)
+    #table = pa.Table.from_pandas(df)
+    #pq.write_table(table, f'{file_name}')
 
 def main(args):
     logger.info("Job is started!")

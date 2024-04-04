@@ -408,3 +408,6 @@ cython_debug/
 #.idea/
 
 data/
+raw_data/
+
+dump

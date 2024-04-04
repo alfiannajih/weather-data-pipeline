@@ -84,13 +84,14 @@ def fetch_weather_data(
 
             daily_data = pd.DataFrame(data_dict)
 
-            full_path = os.path.join(path, f"{location['name'][j]}.parquet")
+            full_path = os.path.join(path, f"{location['name'][j]}.csv")
 
             save_parquet(
                 df=daily_data,
                 file_name=full_path
             )
         time.sleep(wait_time)
+        break
         print(f"Batch {i+1} is finished...")
 
 def read_response(response):
@@ -147,5 +148,6 @@ def read_response(response):
     return daily_data
 
 def save_parquet(df, file_name):
-    table = pa.Table.from_pandas(df)
-    pq.write_table(table, f'{file_name}')
+    df.to_csv(file_name, index=False)
+    #table = pa.Table.from_pandas(df)
+    #pq.write_table(table, f'{file_name}')
