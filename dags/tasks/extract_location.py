@@ -52,8 +52,8 @@ def fetch_location_data(
             "id": city['kode_bps'],
             "districts": districts
         })
-        
-    with open(f"{filename}.json", "w") as fp:
+
+    with open(f"/opt/airflow/data/raw/{filename}.json", "w") as fp:
         json.dump(
             {"province": province, "id": province_json["kode_bps"], "cities": cities},
             fp
