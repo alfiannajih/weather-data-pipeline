@@ -8,7 +8,8 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 
 from tasks.fetch_weather import fetch_weather_data
-from tasks.load_to_sql import load_to_postgres
+from tasks.extract_location import fetch_location_data
+from tasks.transform_location import transform_geo_location
 
 # Defining DAG
 dag = DAG(
@@ -33,6 +34,20 @@ create_weather_table = PostgresOperator(
     dag=dag
 )
 
+# Task 2 => extract geo location
+extract_geo_location = PythonOperator(
+    task_id="extract-geo-location",
+    python_callable=fetch_location_data,
+    op_kwargs={"filename": "jawa_timur", "province": "jawa timur"},
+    dag=dag
+)
 
+# Task 3 => transform geo location
+transforming_geo_location = PythonOperator(
+    task_id="transform-geo-location",
+    python_callable=transform_geo_location,
+    op_kwargs={"filename": "jawa_timur"},
+    dag=dag
+)
 
-[create_location_table, create_weather_table] >> 
+create_location_table >> extract_geo_location >> transforming_geo_location
