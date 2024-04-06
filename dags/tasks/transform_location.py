@@ -4,15 +4,18 @@ import pandas as pd
 
 def get_lon_lat(address):
     geo_url = "https://api.geoapify.com/v1/geocode/search"
-    response = requests.get(
-        geo_url,
-        {
-            "text": address,
-            "limit": 1,
-            "country": "Indonesia",
-            "apiKey": "ff2255fac5754aff859d970f6bbc37a3"
-        }
-    ).json()["features"][0]["geometry"]
+    try:
+        response = requests.get(
+            geo_url,
+            {
+                "text": address,
+                "limit": 1,
+                "country": "Indonesia",
+                "apiKey": "ff2255fac5754aff859d970f6bbc37a3"
+            }
+        ).json()["features"][0]["geometry"]
+    except:
+        return [None, None]
     
     return response["coordinates"]
 
@@ -42,10 +45,10 @@ def transform_geo_location(filename: str):
         break
 
     raw_dict = {
+        "id": id,
         "province": provinces,
         "city": cities,
         "district": districts,
-        "id": id,
         "longitude": longitude,
         "latitude": latitude
     }
