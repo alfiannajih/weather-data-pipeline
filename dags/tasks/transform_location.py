@@ -2,8 +2,19 @@ import json
 import requests
 import pandas as pd
 
-def get_lon_lat(address):
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+def get_add_info(address):
+    output = {
+        "coordinates": [None, None],
+        "timezone": None
+    }
+
     geo_url = "https://api.geoapify.com/v1/geocode/search"
+
     try:
         response = requests.get(
             geo_url,
@@ -11,13 +22,17 @@ def get_lon_lat(address):
                 "text": address,
                 "limit": 1,
                 "country": "Indonesia",
-                "apiKey": "ff2255fac5754aff859d970f6bbc37a3"
+                "apiKey": os.getenv("GEOAPIFY_API_KEY")
             }
-        ).json()["features"][0]["geometry"]
+        ).json()["features"][0]
+        
+        output["coordinates"] = response["geometry"]["coordinates"]
+        output["timezone"] = response["properties"]["timezone"]["name"]
+
     except:
-        return [None, None]
+        pass
     
-    return response["coordinates"]
+    return output
 
 def transform_geo_location(filename: str):
     provinces = []
@@ -26,6 +41,7 @@ def transform_geo_location(filename: str):
     id = []
     latitude = []
     longitude = []
+    timezone = []
 
     with open(f"/opt/airflow/data/raw/{filename}.json", "r") as fp:
         hierachy_loc = json.load(fp)
@@ -38,11 +54,14 @@ def transform_geo_location(filename: str):
             id.append(district["id"])
 
             address = f"{district['district']}, {city['city']}, {hierachy_loc['province']}"
-            loc = get_lon_lat(address)
+            add_info = get_add_info(address)
             
-            longitude.append(loc[0])
-            latitude.append(loc[1])
-        break
+            longitude.append(add_info["coordinates"][0])
+            latitude.append(add_info["coordinates"][1])
+
+            timezone.append(add_info["timezone"])
+            
+            break
 
     raw_dict = {
         "id": id,
@@ -50,7 +69,8 @@ def transform_geo_location(filename: str):
         "city": cities,
         "district": districts,
         "longitude": longitude,
-        "latitude": latitude
+        "latitude": latitude,
+        "timezone": timezone
     }
     
     transformed_df = pd.DataFrame.from_dict(raw_dict)
