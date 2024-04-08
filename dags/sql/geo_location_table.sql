@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS geo_location (
     "district" TEXT,
     "longitude" FLOAT,
     "latitude" FLOAT,
+    "timezone" TEXT,
     PRIMARY KEY ("id")
 );
