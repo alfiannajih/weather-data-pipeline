@@ -413,3 +413,4 @@ raw_data/
 dump
 
 notebooks/
+.cache.sqlite
