@@ -10,7 +10,7 @@
     Developing data pipeline to extract daily weather data by performing ETL (Extract, Transform, Load) processes to ingest the data into a data warehouse.
     <br />
     <br />
-    <a href="#">View Demo</a>
+    <!--<a href="#">View Demo</a>-->
   </p>
 </div>
 
@@ -30,7 +30,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#To Do">To Do</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -41,9 +41,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<!--[![Product Name Screen Shot][product-screenshot]](https://example.com) -->
+![Data Pipeline](img/weather_data_pipeline.png)
 
 This project aims to demonstrate a data engineering workflow by creating a batch processing data pipeline for extracting daily weather data. It involves performing ETL (Extract, Transform, Load) processes to ingest the data into a data warehouse.
+
+As shown in the image above, this pipeline involves two ETL processes: one for geo-location, which runs only once (since it's static data), to obtain location details such as province, city, district, and coordinates. While another ETL for weather data, which runs daily to gather information such as temperature, precipitation, wind speed, etc.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -85,8 +87,8 @@ Before doing the installation, make sure you have Docker installed on your compu
 
 
 
-<!-- ROADMAP -->
-## Roadmap
+<!-- To Do -->
+## To Do
 
 - [x] Create DAG for geo location data
     - [x] Create extract task
@@ -96,7 +98,10 @@ Before doing the installation, make sure you have Docker installed on your compu
     - [x] Create extract task
     - [x] Create transform task
     - [x] Create load task
-- [ ] Add parameter for scheduling DAG 
+- [x] Add parameter for scheduling DAG
+- [ ] Documenting README.md
+    - [x] Documenting project description
+    - [ ] Documenting usage content
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -105,7 +110,7 @@ Before doing the installation, make sure you have Docker installed on your compu
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [Linkedin](https://www.linkedin.com/in/bahrul-alfian-najih/) - alfiannajih@gmail.com
+Bahrul Alfian Najih - [Linkedin](https://www.linkedin.com/in/bahrul-alfian-najih/) - alfiannajih@gmail.com
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -114,8 +119,8 @@ Your Name - [Linkedin](https://www.linkedin.com/in/bahrul-alfian-najih/) - alfia
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
-
+- [Airflow Documentation](https://airflow.apache.org/docs/apache-airflow/stable/index.html)
+- [Geoapify](https://www.geoapify.com/)
+- [Open-Meteo API](https://open-meteo.com/)
+- [Sipedas API](https://sipedas.pertanian.go.id/api/wilayah/index)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
